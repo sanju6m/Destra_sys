@@ -1,0 +1,76 @@
+# Nexus Core - Enterprise AI Workspace
+
+This repository houses the dynamic PHP/MySQL MVC iteration of the Nexus Core platform, serving as an enterprise IT ticket and equipment replacement tracking system.
+
+---
+
+## 📂 File Structure
+
+Below is an overview of the key components and layout of the repository:
+
+```text
+├── config/
+│   └── database.php           # PDO database connection provider
+├── middleware/
+│   └── AuthMiddleware.php     # Class-based privilege & role-level access validation
+├── api/
+│   └── tasks.php              # Backend controller for tickets, quotations, and replacement CRUD
+├── components/
+│   ├── replacement.component.js # Replacement request CRUD, modal forms, and review tables
+│   ├── drawers.component.js   # Client bar alerts & notification modals
+│   ├── auth.component.js      # Session login/logout controls
+│   └── charts.component.js    # Dashboard analytics and data widgets
+├── app.js                     # Main client-side router & workspace view manager
+├── index.php                  # Main entry point and frame structure of the app
+├── replacement_report.php     # Printable/exportable PDF replacement request document template
+├── readme                     # Developer documentation and project reference
+└── scratch/                   # DB migrations, test scripts, and data seeders
+```
+
+---
+
+## 🛠️ Technology Stack
+
+The project is built using a dynamic client-server structure:
+* **Backend & API**: **PHP** (PDO database queries, class-based [AuthMiddleware](file:///c:/xampp/htdocs/InsBinomo/middleware/AuthMiddleware.php) validation, and JSON controllers like [tasks.php](file:///c:/xampp/htdocs/InsBinomo/api/tasks.php)).
+* **Frontend Routing & UI**: **JavaScript (ES6+)** (Dynamic view manager in [app.js](file:///c:/xampp/htdocs/InsBinomo/app.js) and reusable modular UI components in [components/](file:///c:/xampp/htdocs/InsBinomo/components)).
+* **Styling**: **Tailwind CSS & CSS** (Tailwind configuration and custom styles from [index.css](file:///c:/xampp/htdocs/InsBinomo/index.css) loaded in [index.php](file:///c:/xampp/htdocs/InsBinomo/index.php)).
+* **Database**: **MySQL** (Structured relational database querying).
+
+---
+
+## ✨ System Features
+
+### 🛠️ Ticket & Diagnosis Management
+*   **Technician Permissions**: Technicians are restricted from closing tickets (which returns an `"Access Denied"` error) but retain full access to update fields in the **Diagnosis Status** section.
+*   **Quotation Approval Actions**: When a quote is approved, administrators/coordinators are presented with status progression options:
+    1.  Reassign to the first assigned technician.
+    2.  Show technician selection dropdown to assign to another technician.
+    3.  Move back to Pending with a visible `Quotation Approval` tag.
+*   **Seeding & Truncating**: Database ticket mock-ups can be dynamically seeded via `seed_test_tasks.php` or cleared completely via `clear_all_tasks.php`.
+
+### 📦 Equipment Replacement Requests
+*   **Secondary Status Lifecycle**: Every replacement request tracks a secondary delivery/courier status (`Under Review`, `Arranged By Courier`, `Normal Delivery`, `Delivered`, `Waiting`). If status is `Waiting`, a custom sub-reason is recorded (e.g. *Waiting for Parts*).
+*   **Waiting Replacements Datatable**: A dedicated "Waiting Replacement" navigation section and datatable lists all requests currently in `Waiting` secondary status, featuring dynamic search, filters (priority, device type), and row actions.
+*   **Separate Status Control**: In the main Replacement Log table, authorized coordinators/managers can click a separate sliders/settings button (`Set Status`) to directly change the main status, verifier details, and secondary courier/waiting states without having to edit the full request details.
+*   **passcode Verification**: The delete button under the replacement log requires typing a 6-digit administrative passcode (`992110`) before executing.
+*   **Event Notifications**: Any status changes (Approved, Rejected, Cancelled) or updates (Edited) automatically dispatch real-time alerts to the assigned salesman and coordinators.
+*   **PDF Generation & Clean Reports**: Supports client-side PDF export via `replacement_report.php` showing clean customer/authorised signatures in a 3-column footer alignment.
+
+---
+
+## 🤖 AI Developer Prompt
+
+When generating code edits or debugging this codebase, adhere strictly to these principles:
+
+```text
+Role & Context:
+You are coding on Nexus Core, a PHP/JS system using class-based middleware (AuthMiddleware) for privilege matching.
+
+Rules:
+1. Always enforce Ajax privilege checks before processing data updates.
+2. Maintain standard status models. Main statuses are: 'Pending', 'Approved', 'Rejected', 'Cancelled'.
+3. Secondary statuses are: 'Under Review', 'Arranged By Courier', 'Normal Delivery', 'Delivered', 'Waiting'.
+4. Do not delete or overwrite code comments or existing functions unless specifically requested.
+5. Keep UI elements consistent with the CSS styles defined in drawers/modals (Outfit font, Tailwind CSS layout templates).
+```
