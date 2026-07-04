@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniSync - Social Command Center</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    /* Custom scrollbar for a cleaner look */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #E5E7EB;
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D1D5DB;
+    }
+  </style>
+</head>
+<body class="flex h-screen bg-gray-50 text-gray-800 overflow-hidden">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white border-r border-gray-200 hidden md:flex flex-col z-20 h-full">
+    <div class="h-16 flex items-center px-6 border-b border-gray-200 shrink-0">
+      <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">OmniSync</span>
+    </div>
+    
+    <nav class="flex-1 overflow-y-auto py-4">
+      <ul class="space-y-1 px-3">
+        <li>
+          <button class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+            <div class="flex items-center gap-3">
+              <i data-lucide="shopping-cart" class="w-5 h-5"></i> Orders & Requests
+            </div>
+            <span class="bg-blue-100 text-blue-600 py-0.5 px-2 rounded-full text-xs">5</span>
+          </button>
+        </li>
+        <li>
+          <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+            <i data-lucide="bar-chart-3" class="w-5 h-5"></i> Reports & Analytics
+          </button>
+        </li>
+        <li>
+          <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+            <i data-lucide="package" class="w-5 h-5"></i> Inventory Management
+          </button>
+        </li>
+        <li>
+          <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+            <i data-lucide="users" class="w-5 h-5"></i> Employee Payroll
+          </button>
+        </li>
+        <li>
+          <button class="w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors text-gray-600 hover:bg-gray-100 hover:text-gray-900">
+            <i data-lucide="settings" class="w-5 h-5"></i> System Settings
+          </button>
+        </li>
+        <li class="pt-4 pb-2 px-3">
+          <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Channels</span>
+        </li>
+        <!-- Channel Links -->
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-blue-600"></div> Facebook</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-pink-600"></div> Instagram</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-black"></div> TikTok</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-green-500"></div> WhatsApp</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-orange-500"></div> Reddit</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-gray-800"></div> X (Twitter)</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-red-500"></div> Kuaishou</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-black"></div> Threads</button></li>
+        <li><button class="w-full flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"><div class="w-2 h-2 rounded-full bg-blue-800"></div> Tumblr</button></li>
+      </ul>
+    </nav>
+    
+    <div class="p-4 border-t border-gray-200 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-sm">
+          AD
+        </div>
+        <div>
+          <p class="text-sm font-medium">Sanju.J (IGit)</p>
+          <p class="text-xs text-gray-500">System Admin</p>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col h-screen w-full overflow-hidden">
+    <!-- Header -->
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 sm:px-6 z-10 shrink-0">
+      <div class="flex items-center gap-4">
+        <!-- Mobile Menu Toggle (Decorative for this demo) -->
+        <button class="md:hidden text-gray-500">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+        <h1 id="header-title" class="text-xl font-semibold text-gray-800">
+          Social Command Center
+        </h1>
+      </div>
+      
+      <div class="flex items-center gap-4">
+        <div class="relative hidden sm:block">
+          <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+          <input type="text" placeholder="Search Client ID or keywords..." class="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64">
+        </div>
+        <button class="p-2 text-gray-400 hover:text-gray-600 relative">
+          <i data-lucide="bell" class="w-5 h-5"></i>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full border border-white"></span>
+        </button>
+        <button class="p-2 text-gray-400 hover:text-gray-600">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 w-full">
+      
+      <!-- Top Metrics Row -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <!-- Metric 1 -->
+        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Total Engagement</p>
+              <p class="text-2xl font-bold mt-1">24,592</p>
+            </div>
+            <div class="p-2 bg-blue-50 rounded-lg">
+              <i data-lucide="eye" class="w-5 h-5 text-blue-600"></i>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 mt-4 text-sm">
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-green-500"></i>
+            <span class="text-green-500 font-medium">12.5%</span>
+            <span class="text-gray-400">vs last week</span>
+          </div>
+        </div>
+
+        <!-- Metric 2 -->
+        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Incoming Messages</p>
+              <p class="text-2xl font-bold mt-1">1,204</p>
+            </div>
+            <div class="p-2 bg-indigo-50 rounded-lg">
+              <i data-lucide="message-square-dashed" class="w-5 h-5 text-indigo-600"></i>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 mt-4 text-sm">
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-green-500"></i>
+            <span class="text-green-500 font-medium">8.2%</span>
+            <span class="text-gray-400">vs last week</span>
+          </div>
+        </div>
+
+        <!-- Metric 3 -->
+        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Quotation Requests</p>
+              <p class="text-2xl font-bold mt-1">145</p>
+            </div>
+            <div class="p-2 bg-orange-50 rounded-lg">
+              <i data-lucide="shopping-cart" class="w-5 h-5 text-orange-600"></i>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 mt-4 text-sm">
+            <i data-lucide="arrow-up-right" class="w-4 h-4 text-green-500"></i>
+            <span class="text-green-500 font-medium">24%</span>
+            <span class="text-gray-400">vs last week</span>
+          </div>
+        </div>
+
+        <!-- Metric 4 -->
+        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="text-sm font-medium text-gray-500">Avg. Sentiment Score</p>
+              <p class="text-2xl font-bold mt-1">82/100</p>
+            </div>
+            <div class="p-2 bg-green-50 rounded-lg">
+              <i data-lucide="thumbs-up" class="w-5 h-5 text-green-600"></i>
+            </div>
+          </div>
+          <div class="flex items-center gap-1 mt-4 text-sm">
+            <i data-lucide="arrow-down-right" class="w-4 h-4 text-red-500"></i>
+            <span class="text-red-500 font-medium">2.1%</span>
+            <span class="text-gray-400">vs last week</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+        
+        <!-- Left Column: Messages Center & Charts (Takes 2 cols on extra large screens) -->
+        <div class="xl:col-span-2 space-y-8">
+          
+          <!-- Message Center Card -->
+          <div class="bg-white border border-gray-200 rounded-xl shadow-sm flex flex-col h-[600px]">
+            <div class="px-6 py-4 border-b border-gray-200 flex flex-wrap gap-4 justify-between items-center bg-gray-50/50 rounded-t-xl">
+              <div>
+                <h2 class="text-lg font-semibold text-gray-800">Message Center</h2>
+                <p class="text-sm text-gray-500">Recent client inquiries & quotations</p>
+              </div>
+              <div class="flex gap-2">
+                <button class="px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                  Unread (3)
+                </button>
+                <button class="px-3 py-1.5 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                  Filter
+                </button>
+              </div>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+              <!-- Message 1 -->
+              <div class="p-4 rounded-xl border border-blue-200 bg-blue-50/30 hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="absolute top-4 left-4 w-2 h-2 rounded-full bg-blue-600"></div>
+                <div class="flex justify-between items-start mb-2 pl-4">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0032</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 5m ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700 border-gray-200">neutral</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via Shopify"><i data-lucide="shopping-bag" class="w-4 h-4 text-green-600"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">Shopify</span></div>
+                  </div>
+                </div>
+                <div class="mb-3 pl-4">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">Can we connect this POS directly to our existing Shopify store, or do we need a third-party API bridge to sync our online and in-store inventory?</p>
+                </div>
+              </div>
+
+              <!-- Message 2 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0042</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 15m ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-orange-50 text-orange-700 border-orange-200">interest</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via Instagram"><i data-lucide="instagram" class="w-4 h-4 text-pink-600"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">Instagram</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-orange-50 text-orange-600 border border-orange-100 mb-2">Quotation Request</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">Please provide a customized quote for a 5-terminal setup for a quick-service restaurant. We will also need two kitchen display screens (KDS) and three mobile ordering tablets for the floor staff.</p>
+                </div>
+              </div>
+
+              <!-- Message 3 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0018</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 1h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700 border-gray-200">neutral</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via Web"><i data-lucide="globe" class="w-4 h-4 text-blue-600"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">Web Form</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">We run a boutique with three different physical locations. Does the system sync inventory across all stores in real-time so staff can check stock at other branches?</p>
+                </div>
+              </div>
+
+              <!-- Message 4 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0004</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 2h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700 border-gray-200">neutral</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via Email"><i data-lucide="mail" class="w-4 h-4 text-blue-500"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">Email</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">Will your software work with our existing Star Micronics thermal receipt printers and Zebra barcode scanners, or do we have to purchase proprietary hardware from you?</p>
+                </div>
+              </div>
+
+              <!-- Message 5 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0005</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 3h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-blue-50 text-blue-700 border-blue-200">billing</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via WhatsApp"><i data-lucide="message-circle" class="w-4 h-4 text-green-500"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">WhatsApp</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">What are the exact transaction fees if we use your integrated payment processing gateway versus keeping our current merchant account provider?</p>
+                </div>
+              </div>
+
+              <!-- Message 6 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0006</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 4h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700 border-gray-200">neutral</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via Facebook"><i data-lucide="facebook" class="w-4 h-4 text-blue-600"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">Facebook</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">Does the system feature a built-in customer loyalty program? We want a feature where shoppers can earn points and redeem digital coupons based on their purchase tiers.</p>
+                </div>
+              </div>
+
+              <!-- Message 7 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0007</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 5h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-yellow-50 text-yellow-700 border-yellow-200">support</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via TikTok"><i data-lucide="video" class="w-4 h-4 text-black"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">TikTok</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">We frequently do pop-up shops where Wi-Fi is unreliable. Does the POS have a true offline mode that batches and syncs transactions once a connection is restored?</p>
+                </div>
+              </div>
+
+              <!-- Message 8 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0008</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 6h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-gray-50 text-gray-700 border-gray-200">neutral</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via Email"><i data-lucide="mail" class="w-4 h-4 text-blue-500"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">Email</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">Is it possible to set up automated daily sales reports that get emailed directly to our regional managers at closing time, broken down by product category?</p>
+                </div>
+              </div>
+
+              <!-- Message 9 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0009</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 7h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-red-50 text-red-700 border-red-200">security</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via Reddit"><i data-lucide="hash" class="w-4 h-4 text-orange-500"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">Reddit</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">Can we establish different user permission levels for cashiers versus store managers? We need to restrict access so that only managers can approve refunds or void transactions.</p>
+                </div>
+              </div>
+
+              <!-- Message 10 -->
+              <div class="p-4 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-shadow cursor-pointer relative group">
+                <div class="flex justify-between items-start mb-2">
+                  <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs font-semibold text-gray-700 bg-gray-100 px-2 py-1 rounded">CN/Destra/Us/#0010</span>
+                    <span class="text-xs text-gray-400 flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> 8h ago</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-1 rounded-full border bg-green-50 text-green-700 border-green-200">payroll</span>
+                    <div class="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-full" title="via WhatsApp"><i data-lucide="message-circle" class="w-4 h-4 text-green-500"></i><span class="text-xs font-medium text-gray-600 hidden sm:inline">WhatsApp</span></div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-100 mb-2">Question</span>
+                  <p class="text-gray-800 text-sm leading-relaxed">Does the employee management module allow staff to clock in and out using a secure PIN or swipe card, and does it export those timesheets directly to standard payroll software?</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analytics Chart -->
+          <div class="bg-white p-6 border border-gray-200 rounded-xl shadow-sm">
+            <div class="flex justify-between items-center mb-6">
+              <div>
+                <h2 class="text-lg font-semibold text-gray-800">Engagement Over Time</h2>
+                <p class="text-sm text-gray-500">Cross-platform activity (Last 7 days)</p>
+              </div>
+              <select class="text-sm border border-gray-300 rounded-md px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option>Last 7 Days</option>
+                <option>Last 30 Days</option>
+              </select>
+            </div>
+            <!-- Chart Container -->
+            <div id="engagementChart" class="w-full h-72"></div>
+          </div>
+        </div>
+
+        <!-- Right Column: Activity & Stats -->
+        <div class="space-y-8">
+          
+          <!-- Live Activity Feed -->
+          <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50/50 rounded-t-xl flex justify-between items-center">
+              <h2 class="text-lg font-semibold text-gray-800">Live Activity Feed</h2>
+              <span class="flex h-3 w-3 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              </span>
+            </div>
+            <div class="p-4">
+              <div class="space-y-4">
+                
+                <div class="flex items-start gap-3 pb-4 border-b border-gray-100">
+                  <div class="mt-1 p-2 bg-gray-50 rounded-full border border-gray-100">
+                    <i data-lucide="facebook" class="w-4 h-4 text-blue-600 fill-current"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">New Share</p>
+                    <p class="text-xs text-gray-500 truncate">Summer Sale Promo Post</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">+45</span>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 pb-4 border-b border-gray-100">
+                  <div class="mt-1 p-2 bg-gray-50 rounded-full border border-gray-100">
+                    <i data-lucide="instagram" class="w-4 h-4 text-pink-600"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">Story View</p>
+                    <p class="text-xs text-gray-500 truncate">Product Demo Reel</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">1.2k</span>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 pb-4 border-b border-gray-100">
+                  <div class="mt-1 p-2 bg-gray-50 rounded-full border border-gray-100">
+                    <i data-lucide="video" class="w-4 h-4 text-black"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">Video Like</p>
+                    <p class="text-xs text-gray-500 truncate">How to setup POS</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded">+340</span>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 pb-4 border-b border-gray-100">
+                  <div class="mt-1 p-2 bg-gray-50 rounded-full border border-gray-100">
+                    <i data-lucide="message-circle" class="w-4 h-4 text-black"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">Discussion</p>
+                    <p class="text-xs text-gray-500 truncate">Retail Tech Trends</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-semibold text-gray-600 bg-gray-100 px-2 py-1 rounded">28 replies</span>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3 pb-4 border-b border-gray-100">
+                  <div class="mt-1 p-2 bg-gray-50 rounded-full border border-gray-100">
+                    <i data-lucide="shopping-cart" class="w-4 h-4 text-orange-500"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">Watch Request</p>
+                    <p class="text-xs text-gray-500 truncate">Pro Version Demo</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-semibold text-orange-600 bg-orange-50 px-2 py-1 rounded">12 new</span>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                  <div class="mt-1 p-2 bg-gray-50 rounded-full border border-gray-100">
+                    <i data-lucide="message-circle" class="w-4 h-4 text-green-500"></i>
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">Catalogs</p>
+                    <p class="text-xs text-gray-500 truncate">Hardware Specs</p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-semibold text-gray-600 bg-gray-100 px-2 py-1 rounded">5 views</span>
+                  </div>
+                </div>
+
+              </div>
+              <button class="w-full mt-4 py-2 text-sm text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition-colors">
+                View All Activity
+              </button>
+            </div>
+          </div>
+
+          <!-- Content Performance / Sentiment -->
+          <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4">Audience Sentiment</h2>
+            <div class="flex items-center justify-between mb-4">
+               <div class="text-sm text-gray-500">Based on recent comments & messages</div>
+            </div>
+            
+            <div class="space-y-4">
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="font-medium text-gray-700">Positive</span>
+                  <span class="text-gray-500">65%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2.5">
+                  <div class="h-2.5 rounded-full" style="width: 65%; background-color: #10B981"></div>
+                </div>
+              </div>
+              
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="font-medium text-gray-700">Neutral</span>
+                  <span class="text-gray-500">25%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2.5">
+                  <div class="h-2.5 rounded-full" style="width: 25%; background-color: #9CA3AF"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-sm mb-1">
+                  <span class="font-medium text-gray-700">Negative</span>
+                  <span class="text-gray-500">10%</span>
+                </div>
+                <div class="w-full bg-gray-100 rounded-full h-2.5">
+                  <div class="h-2.5 rounded-full" style="width: 10%; background-color: #EF4444"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-gray-100">
+              <h3 class="text-sm font-semibold text-gray-700 mb-3">Top Requested Features (From Quotes)</h3>
+              <ul class="space-y-2 text-sm">
+                <li class="flex justify-between items-center">
+                  <span class="text-gray-600">Shopify Integration</span>
+                  <span class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">24 reqs</span>
+                </li>
+                <li class="flex justify-between items-center">
+                  <span class="text-gray-600">Multi-store Support</span>
+                  <span class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">18 reqs</span>
+                </li>
+                <li class="flex justify-between items-center">
+                  <span class="text-gray-600">Offline Mode</span>
+                  <span class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">12 reqs</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Tab Switching Logic
+    function switchTab(tabId) {
+      const overviewBtn = document.getElementById('tab-overview');
+      const messagesBtn = document.getElementById('tab-messages');
+      const headerTitle = document.getElementById('header-title');
+
+      const activeClass = ['bg-blue-50', 'text-blue-700'];
+      const inactiveClass = ['text-gray-600', 'hover:bg-gray-100', 'hover:text-gray-900'];
+
+      if (tabId === 'overview') {
+        overviewBtn.classList.add(...activeClass);
+        overviewBtn.classList.remove(...inactiveClass);
+        
+        messagesBtn.classList.add(...inactiveClass);
+        messagesBtn.classList.remove(...activeClass);
+        
+        headerTitle.textContent = 'Social Command Center';
+      } else if (tabId === 'messages') {
+        messagesBtn.classList.add(...activeClass);
+        messagesBtn.classList.remove(...inactiveClass);
+        
+        overviewBtn.classList.add(...inactiveClass);
+        overviewBtn.classList.remove(...activeClass);
+        
+        headerTitle.textContent = 'Message Center';
+      }
+    }
+
+    // Initialize ApexCharts for the Engagement Area Chart
+    const options = {
+      series: [{
+        name: 'Facebook',
+        data: [400, 300, 200, 278, 189, 239, 349]
+      }, {
+        name: 'Instagram',
+        data: [240, 139, 980, 390, 480, 380, 430]
+      }],
+      chart: {
+        height: '100%',
+        type: 'area',
+        fontFamily: 'Inter, sans-serif',
+        toolbar: { show: false },
+        zoom: { enabled: false }
+      },
+      colors: ['#3b5998', '#C13584'],
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 2
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.1,
+          stops: [0, 90, 100]
+        }
+      },
+      xaxis: {
+        categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+        labels: {
+          style: {
+            colors: '#6B7280',
+            fontSize: '12px'
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          style: {
+            colors: '#6B7280',
+            fontSize: '12px'
+          }
+        }
+      },
+      grid: {
+        borderColor: '#E5E7EB',
+        strokeDashArray: 4,
+        yaxis: {
+          lines: { show: true }
+        },
+        xaxis: {
+          lines: { show: false }
+        }
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        markers: {
+          radius: 12
+        }
+      },
+      tooltip: {
+        theme: 'light',
+        y: {
+          formatter: function (val) {
+            return val + " engagements"
+          }
+        }
+      }
+    };
+
+    const chart = new ApexCharts(document.querySelector("#engagementChart"), options);
+    chart.render();
+  </script>
+</body>
+</html>
